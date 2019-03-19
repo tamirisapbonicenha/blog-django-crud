@@ -8,14 +8,15 @@
     <title>My Blog | Django</title>
 </head>
 <body>
-    <a href="{% url 'post_create' %}" class="top-menu">Novo Post</a>
     <div class="content container">
         <div class="row">
             <div class="col-md-8">
-            {% block content %}
-            {% endblock %}
+                {% block content %}
+                {% endblock %}
             </div>
         </div>
+        <br>
+        
     </div>
 </body>
 </html>
