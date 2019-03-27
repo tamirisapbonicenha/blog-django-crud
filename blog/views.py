@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
 from .forms import PostForm
 from .models import Post
@@ -20,6 +20,20 @@ class PostView(View):
 # class PostListView(View):
 #     def get(self, request):
 #         return render(request, 'blog/post_list.html', {})    
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/post_detail.html', {'post': post})
+
+
+def post_delete(request, pk):
+    if request.method == "POST":
+        post = Post.objects.get(pk=pk).delete()
+        return redirect('posts')
+    else:
+        post = Post.objects.get(pk=pk)
+        return render(request, 'post_delete.html', {'post': post})
+
 
 def post_new(request):
      if request.method == "POST":

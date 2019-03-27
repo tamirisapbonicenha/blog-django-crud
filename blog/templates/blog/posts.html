@@ -6,7 +6,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ post.title }}</h5>
                 <p class="card-text">{{ post.text|linebreaksbr }}</p>
-                <a href="#" class="card-link">Leia mais</a>
+                <a href="{% url 'post_detail' pk=post.pk %}" class="card-link">Leia mais</a>
             </div>
         </div>      
     {% endfor %}
