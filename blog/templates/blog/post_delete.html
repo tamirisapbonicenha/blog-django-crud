@@ -2,6 +2,11 @@
 
 {% block content %}
     <h1> Tem certeza que deseja deletar o post>{{ post.title }}</a></h1>
-    <a href="{% url 'post_delete_confirm' pk=post.pk %}">SIM</a>
-    <a href="{% url 'post_detail' pk=post.pk %}">NÃO</a>
+    
+    <form method="POST" class="post-form">
+        {% csrf_token %}
+        <p>{{ post.title }}</p>
+        <p>{{ post.text }}</p>
+        <button type="submit" class="btn btn-success">EXCLUIR POST</button>
+    </form>    
 {% endblock %}

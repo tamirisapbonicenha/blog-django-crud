@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>Insira um novo post</h1>
+    <form method="POST" class="post-form">
+        {% csrf_token %}
+
+        <!-- <label for="title">Título</label>
+        <input type="text" id="title" name="title" value="{{ post.title }}"> -->
+        {{ form.as_p }}
+        
+
+        <p><button type="submit" class="save btn btn-primary">Save</button></p>
+        <!-- <p><button type="reset" class="btn btn-primary">Cancel</button></p> -->
+
+
+
+
+
+
+
+
+
+    </form>
+{% endblock %}      
