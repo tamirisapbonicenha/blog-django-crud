@@ -7,19 +7,12 @@ from .models import Post
 class PostView(View):
     def get(self, request):
 
-        posts = Post.objects.all()
+        posts = Post.objects.all() 
         context = {
             'posts': posts
         }
 
         return render(request, 'blog/posts.html', context)
-
-# def post_list(request):
-#     return render(request, 'blog/post_list.html', {})
-
-# class PostListView(View):
-#     def get(self, request):
-#         return render(request, 'blog/post_list.html', {})    
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
