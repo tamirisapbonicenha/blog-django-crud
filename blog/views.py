@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .forms import PostForm
 from .models import Post
@@ -25,7 +25,13 @@ def post_delete(request, pk):
         return redirect('posts')
     else:
         post = Post.objects.get(pk=pk)
-        return render(request, 'post_delete.html', {'post': post})
+        return render(request, 'blog/post_delete.html', {'post': post})
+    
+    
+def post_delete_confirm(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('posts')       
 
 
 def post_new(request):

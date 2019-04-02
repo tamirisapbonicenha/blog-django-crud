@@ -1,0 +1,7 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1> Tem certeza que deseja deletar o post>{{ post.title }}</a></h1>
+    <a href="{% url 'post_delete_confirm' pk=post.pk %}">SIM</a>
+    <a href="{% url 'post_detail' pk=post.pk %}">NÃO</a>
+{% endblock %}
