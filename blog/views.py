@@ -12,7 +12,7 @@ class PostView(View):
             'posts': posts
         }
 
-        return render(request, 'blog/posts.html', context)
+        return render(request, 'blog/home.html', context)
 
 
 def post_detail(request, pk):
@@ -22,14 +22,22 @@ def post_detail(request, pk):
 
 def post_detail_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    form = PostEdit(request.POST or None, instance=post)
+    
+    # print(postEdit)
+    # form = PostEdit(request.POST or None, instance=post)
 
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        # return render(request, 'blog/post_detail.html', {'post': post})
-        return redirect('post_detail', pk)
+    if request.method == "POST":
+        if request.POST['title'] and request.POST['text']:
+            postEdit = Post.objects.get(pk=pk)
+            # postEdit = post 
+            postEdit.title = request.POST['title']
+            postEdit.text = request.POST['text']
+            postEdit.save()
+            return redirect('post_detail', pk)
+        else: 
+            return redirect('home')
 
-    context = {'form': form}
+    context = {'post': post}
     return render(request, 'blog/post_detail_edit.html', context) 
 
 

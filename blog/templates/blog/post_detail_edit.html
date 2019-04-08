@@ -5,10 +5,14 @@
     <form method="POST" class="post-form">
         {% csrf_token %}
 
-        <!-- <label for="title">Título</label>
-        <input type="text" id="title" name="title" value="{{ post.title }}"> -->
-        {{ form.as_p }}
-        
+        <label for="title">Título</label>
+        <input type="text" id="title" name="title" value="{{ post.title }}">
+
+        <label for="title">text</label>
+        <input type="text" id="title" name="text" value="{{ post.text }}">  
+
+        <!-- {{ post.title }} -->
+        <!-- {{ post.title }} -->
 
         <p><button type="submit" class="save btn btn-primary">Save</button></p>
         <!-- <p><button type="reset" class="btn btn-primary">Cancel</button></p> -->

@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-sm-4">    
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.text|linebreaksbr }}</p>
+                        <a href="{% url 'post_detail' pk=post.pk %}" class="card-link">Leia mais</a>
+                        <a href="{% url 'post_detail_edit' pk=post.pk %}" class="card-link">Editar post</a>
+                    </div>
+                </div>   
+            </div>
+        {% endfor %}
+    </div>           
+    <a href="{% url 'post_create' %}" class="btn btn-primary mt-5">Novo Post</a>
+{% endblock %}    
