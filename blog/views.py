@@ -32,18 +32,16 @@ def post_detail(request, pk):
 
 def post_detail_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    
-    # print(postEdit)
-    # form = PostEdit(request.POST or None, instance=post)
 
     if request.method == "POST":
         if request.POST['title'] and request.POST['text'] and request.POST['category']:
             postEdit = Post.objects.get(pk=pk)
-            # CategoryEdit = Category.objects.get(pk=pk)
+            print('#############', request.POST['category'])
+            CategoryEdit = Category.objects.get(id=request.POST['category'])
             # postEdit = post 
             postEdit.title = request.POST['title']
             postEdit.text = request.POST['text']
-            # postEdit.category = request.POST['category']
+            postEdit.category = CategoryEdit
             postEdit.save()
             return redirect('post_detail', pk)
         else: 
