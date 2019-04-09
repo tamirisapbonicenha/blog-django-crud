@@ -5,14 +5,22 @@
     <form method="POST" class="post-form">
         {% csrf_token %}
 
-        <label for="title">Título</label>
-        <input type="text" id="title" name="title" value="{{ post.title }}">
-
-        <label for="title">text</label>
-        <input type="text" id="title" name="text" value="{{ post.text }}">  
-
-        <!-- {{ post.title }} -->
-        <!-- {{ post.title }} -->
+        <div class="form-group">
+            <label for="title">Título</label>
+            <input type="text" class="form-control" name="title" id="title" value="{{ post.title }}"">
+        </div>   
+        
+        <div class="form-group">
+            <label for="text">Texto</label>
+            <textarea class="form-control" id="text"  name="text" rows="3">{{ post.text }}</textarea>
+        </div>  
+        
+        <select class="form-control" name="category">
+            {% for cat in category %}
+                <option>{{ cat }}</option>
+                <!-- <option value="{{ cat }}">{{ cat }}</option> -->
+            {% endfor %}    
+        </select>        
 
         <p><button type="submit" class="save btn btn-primary">Save</button></p>
         <!-- <p><button type="reset" class="btn btn-primary">Cancel</button></p> -->

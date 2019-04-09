@@ -1,7 +1,10 @@
+from django.http import Http404
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .forms import PostForm, PostEdit
-from .models import Post
+from .models import Post, Category
 
 # Create your views here.
 class PostView(View):
@@ -16,7 +19,14 @@ class PostView(View):
 
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    # post = get_object_or_404(Post, pk=pk)
+    # return render(request, 'blog/post_detail.html', {'post': post})
+
+    try:
+        post = Post.objects.get(pk=pk)
+    except Post.DoesNotExist:
+        raise Http404("Post does not exist")
+        
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
@@ -27,17 +37,23 @@ def post_detail_edit(request, pk):
     # form = PostEdit(request.POST or None, instance=post)
 
     if request.method == "POST":
-        if request.POST['title'] and request.POST['text']:
+        if request.POST['title'] and request.POST['text'] and request.POST['category']:
             postEdit = Post.objects.get(pk=pk)
+            # CategoryEdit = Category.objects.get(pk=pk)
             # postEdit = post 
             postEdit.title = request.POST['title']
             postEdit.text = request.POST['text']
+            # postEdit.category = request.POST['category']
             postEdit.save()
             return redirect('post_detail', pk)
         else: 
-            return redirect('home')
+            return redirect('posts')
 
-    context = {'post': post}
+    context = {
+        'post': post,
+        'category': Category.objects.all()
+    }
+
     return render(request, 'blog/post_detail_edit.html', context) 
 
 
@@ -57,6 +73,7 @@ def post_delete(request, pk):
 #     return redirect('posts')       
 
 
+@login_required
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
