@@ -1,4 +1,5 @@
 from django.db import models
+from authors.models import Author
 
 from django.utils import timezone
 
@@ -16,6 +17,7 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
+    author = models.ForeignKey(Author, null=True, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     created_date = models.DateTimeField(
             default=timezone.now)
