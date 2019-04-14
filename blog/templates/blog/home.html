@@ -8,10 +8,9 @@
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
-                        <h5 class="card-title">{{ post.author }}</h5>
                         <p class="card-text">{{ post.text|linebreaksbr }}</p>
                         <a href="{% url 'post_detail' pk=post.pk %}" class="card-link">Leia mais</a>
-                        <a href="{% url 'post_detail_edit' pk=post.pk %}" class="card-link">Editar post</a>
+                        <a href="{% url 'post_edit' pk=post.pk %}" class="card-link">Editar post</a>
                     </div>
                 </div>                
             </div>

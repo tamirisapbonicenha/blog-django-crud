@@ -30,7 +30,7 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
-def post_detail_edit(request, pk):
+def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
     if request.method == "POST":
@@ -52,7 +52,7 @@ def post_detail_edit(request, pk):
         'category': Category.objects.all()
     }
 
-    return render(request, 'blog/post_detail_edit.html', context) 
+    return render(request, 'blog/post_edit.html', context) 
 
 
 def post_delete(request, pk):
