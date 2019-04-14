@@ -1,9 +1,16 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h5 class="card-title">{{ post.title }}</h5>
-    <p class="card-text">{{ post.text|linebreaksbr }}</p>
-    
-    <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger mt-5">Delete post</a>
-    
+    <section class="post">
+        <h2 class="card-title">{{ post.title }}</h5>
+        <p class="card-text">{{ post.text|linebreaksbr }}</p>
+        
+        <div class="post__actions text-right mt-5">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-secondary mt-5"><i class="far fa-edit"></i></a>
+                <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger mt-5"><i class="far fa-trash-alt"></i></a>
+            </div>            
+        </div>
+        
+    </section>
 {% endblock %}      
