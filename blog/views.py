@@ -18,6 +18,11 @@ class PostView(View):
         return render(request, 'blog/home.html', context)
 
 
+def posts_all(request):
+    posts =  Post.objects.all()
+        
+    return render(request, 'blog/posts_all.html', {'posts': posts})
+
 def post_detail(request, pk):
     # post = get_object_or_404(Post, pk=pk)
     # return render(request, 'blog/post_detail.html', {'post': post})

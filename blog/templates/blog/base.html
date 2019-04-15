@@ -34,8 +34,11 @@
                                 <a class="nav-link" href="#">Categoria 1</a>
                             </li>
                             <li class="nav-item">
-                                    <a class="nav-link" href="#">Categoria 2</a>
-                                </li>
+                                <a class="nav-link" href="#">Categoria 2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'posts_all' %}" class="nav-link" href="#">Todos os posts</a>
+                            </li>                            
                         </ul>
                         <form class="search-form form-inline my-2 my-lg-0">
                             <div class="input-group">
@@ -46,7 +49,9 @@
                             </div>
                         </form>
                         
-                        <a href="{% url 'post_create' %}" class="btn btn-primary ml-sm-0 ml-lg-3"><i class="far fa-plus-square"></i></a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'post_create' %}" class="btn btn-primary ml-sm-0 ml-lg-3"><i class="far fa-plus-square"></i></a>
+                        {% endif %}    
                     </div>
                 </div>    
             </nav>
