@@ -8,5 +8,6 @@ urlpatterns = [
     path('post_edit/<int:pk>/', views.post_edit, name='post_edit'),
     path('post_delete/<int:pk>/', views.post_delete, name='post_delete'),
     path('posts_all/', views.posts_all, name='posts_all'),
+    path('category_create/', views.category_create, name='category_create'),
     # path('post_delete_confirm/<int:pk>/', views.post_delete_confirm, name='post_delete_confirm'),
 ]

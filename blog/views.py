@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .forms import PostForm, PostEdit
+from .forms import PostForm, PostEdit, CategoryForm
 from .models import Post, Category
 
 # Create your views here.
@@ -93,3 +93,13 @@ def post_new(request):
     return render(request, 'blog/post_create.html', {'form': form})
 
     
+def category_create(request):
+    form = CategoryForm()
+    if request.method == 'POST':
+        form = CategoryForm()
+
+    if form.is_valid():
+        print('validation Success!')
+        print("Name: "+form.cleaned_data['name'])
+
+    return render(request, 'blog/category_create.html', {'form' : form})
