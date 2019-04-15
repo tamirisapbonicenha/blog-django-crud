@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .forms import PostForm, PostEdit
@@ -19,7 +20,10 @@ class PostView(View):
 
 
 def posts_all(request):
-    posts =  Post.objects.all()
+    posts_list =  Post.objects.all()
+    paginator = Paginator(posts_list, 5)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
         
     return render(request, 'blog/posts_all.html', {'posts': posts})
 

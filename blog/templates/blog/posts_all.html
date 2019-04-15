@@ -19,6 +19,54 @@
                     </div>                
                 </div>
             {% endfor %}
-        </div>           
+        </div> 
+
+        <ul class="pagination">
+            {% if posts.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{ posts.previous_page_number }}" class="page-link">&laquo;</a>
+                </li>
+            {% else %}
+                <li class="disabled"><a class="page-link">&laquo;</a></li>                 
+            {% endif %} 
+
+            {% for i in posts.paginator.page_range %}
+                {% if posts.number == i %}
+                    <li class="page-item">
+                        <!-- <span>{{ i }} <span class="sr-only">(current)</span></span> -->
+                        <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if posts.has_next %}
+                <li class="page-item">
+                    <a href="?page={{ posts.next_page_number }}" class="page-link">&raquo;</a>                        
+                </li>
+            {% else %}
+            <li class="disabled"><a class="page-link">&raquo;</a></li>  
+            {% endif %}                 
+        </ul>       
+        
+        <!-- <div class="pagination"> -->
+            <!-- <span class="step-links">
+                {% if posts.has_previous %}
+
+                {% endif %}
+        
+                <span class="current">
+                    Página {{ posts.number }} de {{ posts.paginator.num_pages }}.
+                </span>
+        
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}">próxima</a>
+                    <a href="?page={{ posts.paginator.num_pages }}">última página &raquo;</a>
+                {% endif %}
+            </span>
+        </div>         -->
     </div>    
 {% endblock %}    
