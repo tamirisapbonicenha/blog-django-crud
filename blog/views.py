@@ -80,26 +80,45 @@ def post_delete(request, pk):
 #     return redirect('posts')       
 
 
+# @login_required
+# def post_new(request):
+#     if request.method == "POST":
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.save()
+#             return redirect('posts')
+#     else:
+#         form = PostForm()
+#     return render(request, 'blog/post_create.html', {'form': form})
+
+
 @login_required
 def post_new(request):
-    if request.method == "POST":
+    post = Post()
+    if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
-            post = form.save(commit=False)
+            post.author = form.cleaned_data['author']  
+            # bill = Bill.objects.get(form.cleaned_data['pk'])
+            post.title = form.cleaned_data['title']  
+            post.text = form.cleaned_data['text']  
+            post.category = Category.objects.get(id=form.cleaned_data['category'])
             post.save()
-            return redirect('posts')
     else:
         form = PostForm()
-    return render(request, 'blog/post_create.html', {'form': form})
+
+    return render(request, 'blog/post_create.html', {'form' : form})
 
     
 def category_create(request):
-    form = CategoryForm()
     if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']  
+            c = Category(name=name)
+            c.save()
+    else:
         form = CategoryForm()
-
-    if form.is_valid():
-        print('validation Success!')
-        print("Name: "+form.cleaned_data['name'])
 
     return render(request, 'blog/category_create.html', {'form' : form})
