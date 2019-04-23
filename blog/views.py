@@ -122,3 +122,6 @@ def category_create(request):
         form = CategoryForm()
 
     return render(request, 'blog/category_create.html', {'form' : form})
+
+def search_posts(request):
+    print('##')    
