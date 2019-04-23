@@ -40,12 +40,12 @@
                                 <a href="{% url 'posts_all' %}" class="nav-link" href="#">Todos os posts</a>
                             </li>                            
                         </ul>
-                        <form class="search-form form-inline my-2 my-lg-0">
+                        <form method="GET" action="{% url 'search_posts' %}" class="search-form form-inline my-2 my-lg-0">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <button class="search-btn btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
                                 </div>
-                                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                                <input class="form-control" type="search" name="q" value="{{request.GET.q}}" placeholder="Search" aria-label="Search">
                             </div>
                         </form>
                         

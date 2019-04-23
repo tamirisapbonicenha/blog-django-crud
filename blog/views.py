@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 from django.views import View
 from .forms import PostForm, PostEdit, CategoryForm
 from .models import Post, Category
@@ -124,4 +125,12 @@ def category_create(request):
     return render(request, 'blog/category_create.html', {'form' : form})
 
 def search_posts(request):
-    print('##')    
+    template = 'blog/posts_all.html'  # padrões diferentes
+    query = request.GET.get('q')
+    results = Post.objects.filter(Q(title__icontains=query))
+
+    context = {
+        'posts': results,
+    }
+
+    return render(request, template, context)
