@@ -1,6 +1,9 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
+
+    {% include "blog/includes/parag.html" %}
+
     <div class="posts">
         <div class="row">
             {% for post in posts %}
