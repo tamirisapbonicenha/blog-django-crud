@@ -127,7 +127,7 @@ def category_create(request):
 def search_posts(request):
     template = 'blog/posts_all.html'  # padrões diferentes
     query = request.GET.get('q')
-    results = Post.objects.filter(Q(title__icontains=query))
+    results = Post.objects.filter(Q(title__icontains=query) | Q(text__icontains='django'))
 
     context = {
         'posts': results,
