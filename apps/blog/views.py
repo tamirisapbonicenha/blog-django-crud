@@ -29,19 +29,19 @@ def posts_all(request):
     return render(request, 'blog/posts_all.html', {'posts': posts})
 
 def post_detail(request, slug):
-    # post = get_object_or_404(Post, slug=slug)
+    # post = get_object_or_404(Post, pk=pk)
     # return render(request, 'blog/post_detail.html', {'post': post})
 
-    try:
-        post = Post.objects.get(slug=slug)
-    except Post.DoesNotExist:
-        raise Http404("Post does not exist")
+    # try:
+    #     post = Post.objects.get(pk=pk)
+    # except Post.DoesNotExist:
+    #     raise Http404("Post does not exist")
 
-    # post = Post.objects.filter(slug__iexact = slug)
-    # if post.exists():
-    #     post = post.first()
-    # else:
-    #     return HttpResponse('<h1>Post Not Found</h1>')
+    post = Post.objects.filter(slug__iexact = slug)
+    if post.exists():
+        post = post.first()
+    else:
+        return HttpResponse('<h1>Post Not Found</h1>')
 
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1

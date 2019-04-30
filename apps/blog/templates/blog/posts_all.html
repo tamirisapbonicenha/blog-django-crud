@@ -4,22 +4,22 @@
     <div class="posts">
         <div class="row">
             {% for post in posts %}
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-4 col-md-6 mb-4">    
                     <div class="card">
                         {% if post.published %}<span class="published-flag text-light bg-success py-1 px-4">Publicado</span>{% else %}<span class="published-flag text-light bg-danger py-1 px-4">Não publicado</span>{% endif %}
-
+                        
                         <div class="card-body">
                             <h5 class="card-title">{{ post.title }}</h5>
                             <p class="card-text">{{ post.text|linebreaksbr }}</p>
-                            <a href="{% url 'post_detail' slug=post.slug %}" class="card-link">Leia mais</a>
+                            <a href="{% url 'post_detail' pk=post.pk %}" class="card-link">Leia mais</a>
                             {% if user.is_authenticated %}
                                 <a href="{% url 'post_edit' pk=post.pk %}" class="card-link">Editar post</a>
                             {% endif %}
                         </div>
-                    </div>
+                    </div>                
                 </div>
             {% endfor %}
-        </div>
+        </div> 
 
         <ul class="pagination">
             {% if posts.has_previous %}
@@ -27,8 +27,8 @@
                     <a href="?page={{ posts.previous_page_number }}" class="page-link">&laquo;</a>
                 </li>
             {% else %}
-                <li class="disabled"><a class="page-link">&laquo;</a></li>
-            {% endif %}
+                <li class="disabled"><a class="page-link">&laquo;</a></li>                 
+            {% endif %} 
 
             {% for i in posts.paginator.page_range %}
                 {% if posts.number == i %}
@@ -41,31 +41,31 @@
                     </li>
                 {% endif %}
             {% endfor %}
-
+            
             {% if posts.has_next %}
                 <li class="page-item">
-                    <a href="?page={{ posts.next_page_number }}" class="page-link">&raquo;</a>
+                    <a href="?page={{ posts.next_page_number }}" class="page-link">&raquo;</a>                        
                 </li>
             {% else %}
-            <li class="disabled"><a class="page-link">&raquo;</a></li>
-            {% endif %}
-        </ul>
-
+            <li class="disabled"><a class="page-link">&raquo;</a></li>  
+            {% endif %}                 
+        </ul>       
+        
         <!-- <div class="pagination"> -->
             <!-- <span class="step-links">
                 {% if posts.has_previous %}
 
                 {% endif %}
-
+        
                 <span class="current">
                     Página {{ posts.number }} de {{ posts.paginator.num_pages }}.
                 </span>
-
+        
                 {% if posts.has_next %}
                     <a href="?page={{ posts.next_page_number }}">próxima</a>
                     <a href="?page={{ posts.paginator.num_pages }}">última página &raquo;</a>
                 {% endif %}
             </span>
         </div>         -->
-    </div>
-{% endblock %}
+    </div>    
+{% endblock %}    
