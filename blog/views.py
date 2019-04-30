@@ -12,7 +12,7 @@ from .models import Post, Category
 class PostView(View):
     def get(self, request):
 
-        posts = Post.objects.all() 
+        posts = Post.objects.all()
         context = {
             'posts': posts
         }
@@ -25,19 +25,28 @@ def posts_all(request):
     paginator = Paginator(posts_list, 5)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
-        
+
     return render(request, 'blog/posts_all.html', {'posts': posts})
 
-def post_detail(request, pk):
+def post_detail(request, slug):
     # post = get_object_or_404(Post, pk=pk)
     # return render(request, 'blog/post_detail.html', {'post': post})
 
-    try:
-        post = Post.objects.get(pk=pk)
-    except Post.DoesNotExist:
-        raise Http404("Post does not exist")
-        
-    return render(request, 'blog/post_detail.html', {'post': post})
+    # try:
+    #     post = Post.objects.get(pk=pk)
+    # except Post.DoesNotExist:
+    #     raise Http404("Post does not exist")
+
+    post = Post.objects.filter(slug__iexact = slug)
+    if post.exists():
+        post = post.first()
+    else:
+        return HttpResponse('<h1>Post Not Found</h1>')
+
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
+    return render(request, 'blog/post_detail.html', {'post': post, 'num_visits': num_visits,})
 
 
 def post_edit(request, pk):
@@ -48,13 +57,13 @@ def post_edit(request, pk):
             postEdit = Post.objects.get(pk=pk)
             print('#############', request.POST['category'])
             CategoryEdit = Category.objects.get(id=request.POST['category'])
-            # postEdit = post 
+            # postEdit = post
             postEdit.title = request.POST['title']
             postEdit.text = request.POST['text']
             postEdit.category = CategoryEdit
             postEdit.save()
             return redirect('post_detail', pk)
-        else: 
+        else:
             return redirect('posts')
 
     context = {
@@ -62,7 +71,7 @@ def post_edit(request, pk):
         'category': Category.objects.all()
     }
 
-    return render(request, 'blog/post_edit.html', context) 
+    return render(request, 'blog/post_edit.html', context)
 
 
 def post_delete(request, pk):
@@ -71,14 +80,14 @@ def post_delete(request, pk):
     if request.method == "POST":
         post.delete()
         return redirect('posts')
-    
+
     return render(request, 'blog/post_delete.html', {'post': post})
-    
-    
+
+
 # def post_delete_confirm(request, pk):
 #     post = get_object_or_404(Post, pk=pk)
 #     post.delete()
-#     return redirect('posts')       
+#     return redirect('posts')
 
 
 # @login_required
@@ -100,10 +109,10 @@ def post_new(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
-            post.author = form.cleaned_data['author']  
+            post.author = form.cleaned_data['author']
             # bill = Bill.objects.get(form.cleaned_data['pk'])
-            post.title = form.cleaned_data['title']  
-            post.text = form.cleaned_data['text']  
+            post.title = form.cleaned_data['title']
+            post.text = form.cleaned_data['text']
             post.category = Category.objects.get(id=form.cleaned_data['category'])
             post.save()
     else:
@@ -111,12 +120,12 @@ def post_new(request):
 
     return render(request, 'blog/post_create.html', {'form' : form})
 
-    
+
 def category_create(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']  
+            name = form.cleaned_data['name']
             c = Category(name=name)
             c.save()
     else:

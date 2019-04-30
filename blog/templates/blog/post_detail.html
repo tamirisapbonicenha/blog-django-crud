@@ -5,14 +5,18 @@
         <h2>{{ post.title }}</h2>
         <p>{{ post.text|linebreaksbr }}</p>
         <h6 class="mt-5">Escrito por: {{ post.author }}</h6>
-        
+
         {% if user.is_authenticated %}
-            <div class="post__actions text-right mt-5">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-secondary mt-5"><i class="far fa-edit"></i></a>
-                    <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger mt-5"><i class="far fa-trash-alt"></i></a>
-                </div>            
+        <div class="post__actions text-right mt-5">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-secondary mt-5"><i class="far fa-edit"></i></a>
+                <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger mt-5"><i class="far fa-trash-alt"></i></a>
             </div>
-        {% endif %}    
+        </div>
+        {% endif %}
+
+        {{ num_visits }}
+
+        {% include "blog/includes/author.html" with author=post.author %}
     </section>
-{% endblock %}      
+{% endblock %}
