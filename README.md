@@ -1,1 +1,1 @@
-# blog-django-crud
+# blog-project-django
