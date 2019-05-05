@@ -1,37 +1,28 @@
 from django.db import models
-from authors.models import Author
+from django.utils import timezone
+
 from PIL import Image
 
 from django.db.models import signals
 from myblog.utils import unique_slug_generator
 
-from django.utils import timezone
+from authors.models import Author
+from categories.models import Category
 
 def post_image(instance, filename):
     return 'p_{0}/{1}'.format(instance.id, filename)
 
-class Category(models.Model):
-    name = models.CharField(max_length=200)
-
-    def publish(self):
-        self.save()
-
-    def __str__(self):
-        return self.name
-
-
-# Create your models here.
 class Post(models.Model):
-    author = models.ForeignKey(Author, null=True, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    text = models.TextField()
-    image = models.ImageField(upload_to=post_image, null=True)
-    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
-    published = models.BooleanField('Publicar?', default=False)
-    slug = models.SlugField(max_length=200, null=True, blank=True)
     created_date = models.DateTimeField(
             default=timezone.now)
-
+    author = models.ForeignKey(Author, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
+    title = models.CharField(max_length=256)
+    text = models.TextField()
+    image = models.ImageField(upload_to=post_image, null=True)
+    published = models.BooleanField('Publicar?', default=False)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
+    
     def save(self, *args, **kwargs):
         if self.id is None:
             saved_image = self.image

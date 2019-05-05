@@ -5,7 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.views import View
-from .forms import PostForm, PostEdit, CategoryForm
+from .forms import PostForm, PostEdit
+# CategoryForm
 from .models import Post, Category
 
 # Create your views here.
@@ -17,20 +18,20 @@ class PostView(View):
             'posts': posts
         }
 
-        return render(request, 'blog/home.html', context)
+        return render(request, 'home.html', context)
 
 
-def posts_all(request):
+def posts(request):
     posts_list =  Post.objects.all()
     paginator = Paginator(posts_list, 5)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
 
-    return render(request, 'blog/posts_all.html', {'posts': posts})
+    return render(request, 'posts/posts_all.html', {'posts': posts})
 
 def post_detail(request, slug):
     # post = get_object_or_404(Post, slug=slug)
-    # return render(request, 'blog/post_detail.html', {'post': post})
+    # return render(request, 'posts/post_detail.html', {'post': post})
 
     try:
         post = Post.objects.get(slug=slug)
@@ -46,7 +47,7 @@ def post_detail(request, slug):
     num_visits = request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits + 1
 
-    return render(request, 'blog/post_detail.html', {'post': post, 'num_visits': num_visits,})
+    return render(request, 'posts/post_detail.html', {'post': post, 'num_visits': num_visits,})
 
 
 def post_edit(request, pk):
@@ -71,7 +72,7 @@ def post_edit(request, pk):
         'category': Category.objects.all()
     }
 
-    return render(request, 'blog/post_edit.html', context)
+    return render(request, 'posts/post_edit.html', context)
 
 
 def post_delete(request, pk):
@@ -81,7 +82,7 @@ def post_delete(request, pk):
         post.delete()
         return redirect('posts')
 
-    return render(request, 'blog/post_delete.html', {'post': post})
+    return render(request, 'posts/post_delete.html', {'post': post})
 
 
 # def post_delete_confirm(request, pk):
@@ -100,7 +101,7 @@ def post_delete(request, pk):
 #             return redirect('posts')
 #     else:
 #         form = PostForm()
-#     return render(request, 'blog/post_create.html', {'form': form})
+#     return render(request, 'posts/post_create.html', {'form': form})
 
 
 @login_required
@@ -118,23 +119,23 @@ def post_new(request):
     else:
         form = PostForm()
 
-    return render(request, 'blog/post_create.html', {'form' : form})
+    return render(request, 'posts/post_create.html', {'form' : form})
 
 
-def category_create(request):
-    if request.method == 'POST':
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            c = Category(name=name)
-            c.save()
-    else:
-        form = CategoryForm()
+# def category_create(request):
+#     if request.method == 'POST':
+#         form = CategoryForm(request.POST)
+#         if form.is_valid():
+#             name = form.cleaned_data['name']
+#             c = Category(name=name)
+#             c.save()
+#     else:
+#         form = CategoryForm()
 
-    return render(request, 'blog/category_create.html', {'form' : form})
+#     return render(request, 'posts/category_create.html', {'form' : form})
 
 def search_posts(request):
-    template = 'blog/posts_all.html'  # padrões diferentes
+    template = 'posts/posts_all.html'  # padrões diferentes
     query = request.GET.get('q')
     results = Post.objects.filter(Q(title__icontains=query) | Q(text__icontains=query))
 

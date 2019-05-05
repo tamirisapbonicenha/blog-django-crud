@@ -1,12 +1,13 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
     <div class="post-edit">
-        <h2 class="mb-3">Editar post</h2>
+        <h2 class="mb-3">Insira um novo post</h2>
 
         <form method="POST" class="post-form">
             {% csrf_token %}
-            <div class="form-group">
+            {{ form.as_p }}
+            <!--<div class="form-group">
                 <label for="title">Título</label>
                 <input type="text" class="form-control" name="title" id="title" value="{{ post.title }}">
             </div>   
@@ -17,13 +18,12 @@
             <select class="form-control" name="category">
                 {% for cat in category %}
                     <option{% if post.category == cat %} selected{% endif %} value="{{ cat.id }}">{{ cat }}</option>
-                    <!-- <option value="{{ cat }}">{{ cat }}</option> -->
                 {% endfor %}    
-            </select>       
+            </select>-->      
 
             <div class="text-right">
                 <button type="submit" class="btn btn-success mt-4"><i class="far fa-save"></i></button>
             </div>
         </form>   
-    </div>  
+    </div>
 {% endblock %}      

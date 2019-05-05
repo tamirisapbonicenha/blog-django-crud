@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
     <section class="post-detail">
@@ -17,6 +17,6 @@
 
         {{ num_visits }}
 
-        {% include "blog/includes/author.html" with author=post.author %}
+        {% include "posts/includes/author.html" with author=post.author %}
     </section>
 {% endblock %}

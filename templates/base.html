@@ -19,7 +19,7 @@
         <header class="header mb-5">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <a href="{% url 'posts' %}">
+                    <a href="{% url 'home' %}">
                         <i class="fas fa-address-card fa-3x mr-2"></i>
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -37,7 +37,7 @@
                                 <a class="nav-link" href="#">Categoria 2</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'posts_all' %}" class="nav-link" href="#">Todos os posts</a>
+                                <a href="{% url 'posts' %}" class="nav-link" href="#">Todos os posts</a>
                             </li>
                         </ul>
                         <form method="GET" action="{% url 'search_posts' %}" class="search-form form-inline my-2 my-lg-0">
