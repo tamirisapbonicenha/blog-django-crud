@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from django.core.exceptions import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'djyay+-ezuc04odjf%0w+i!rujxdq)9lz&4sz$5wg^9z259^98'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -58,7 +59,6 @@ ROOT_URLCONF = 'myblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -135,3 +135,8 @@ STATICFILES_DIRS = (
 )
 
 INTERNAL_IPS = ('127.0.0.1')
+
+try:
+   from .local_settings import *
+except ImportError:
+    raise Exception("Um arquivo local_settings.py é obrigatório para rodar esse projeto")
