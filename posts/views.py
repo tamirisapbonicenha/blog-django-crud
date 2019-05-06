@@ -1,33 +1,51 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseNotAllowed, HttpResponse
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 from django.db.models import Q
 from django.views import View
 from .forms import PostForm, PostEdit
 # CategoryForm
 from .models import Post, Category
 
-# Create your views here.
-class PostView(View):
-    def get(self, request):
+class PostView(TemplateView):
+    template_name = "home.html"
 
-        posts = Post.objects.all()
-        context = {
-            'posts': posts
-        }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.all()
+        return context    
 
-        return render(request, 'home.html', context)
+# def posts(request):
+#     posts_list =  Post.objects.all()
+#     paginator = Paginator(posts_list, 5)
+#     page = request.GET.get('page')
+#     posts = paginator.get_page(page)
 
+#     return render(request, 'posts/posts_all.html', {'posts': posts})
 
-def posts(request):
-    posts_list =  Post.objects.all()
-    paginator = Paginator(posts_list, 5)
-    page = request.GET.get('page')
-    posts = paginator.get_page(page)
+class Posts(ListView): 
+    template_name = "posts/posts_all.html"
+    model = Post
+    context_object_name = 'posts'  # Default: object_list
+    paginate_by = 10
+    ordering = ['-id']
+    # queryset = Post.objects.all()
 
-    return render(request, 'posts/posts_all.html', {'posts': posts})
+    def get_ordering(self):
+        """Return the field or fields to use for ordering the queryset."""
+        return self.ordering    
+
+    def get_paginate_by(self, queryset):
+        """
+        Get the number of items to paginate by, or ``None`` for no pagination.
+        """
+        return self.paginate_by        
+        
 
 def post_detail(request, slug):
     # post = get_object_or_404(Post, slug=slug)

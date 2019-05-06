@@ -22,16 +22,16 @@
         </div>
 
         <ul class="pagination">
-            {% if posts.has_previous %}
+            {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a href="?page={{ posts.previous_page_number }}" class="page-link">&laquo;</a>
+                    <a href="?page={{ page_objprevious_page_number }}" class="page-link">&laquo;</a>
                 </li>
             {% else %}
                 <li class="disabled"><a class="page-link">&laquo;</a></li>
             {% endif %}
 
-            {% for i in posts.paginator.page_range %}
-                {% if posts.number == i %}
+            {% for i in page_objpaginator.page_range %}
+                {% if page_objnumber == i %}
                     <li class="page-item">
                         <a href="?page={{ i }}" class="page-link">{{ i }}</a>
                     </li>
@@ -42,9 +42,9 @@
                 {% endif %}
             {% endfor %}
 
-            {% if posts.has_next %}
+            {% if page_objhas_next %}
                 <li class="page-item">
-                    <a href="?page={{ posts.next_page_number }}" class="page-link">&raquo;</a>
+                    <a href="?page={{ page_objnext_page_number }}" class="page-link">&raquo;</a>
                 </li>
             {% else %}
             <li class="disabled"><a class="page-link">&raquo;</a></li>
