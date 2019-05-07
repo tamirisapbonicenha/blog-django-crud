@@ -10,6 +10,7 @@ from django.views.generic import DetailView
 from django.db.models import Q
 from django.views import View
 from .forms import PostForm, PostEdit
+from http.client import responses
 # CategoryForm
 from .models import Post, Category
 
@@ -19,7 +20,7 @@ class PostView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.all()
-        return context    
+        return context
 
 # def posts(request):
 #     posts_list =  Post.objects.all()
@@ -29,7 +30,7 @@ class PostView(TemplateView):
 
 #     return render(request, 'posts/posts_all.html', {'posts': posts})
 
-class Posts(ListView): 
+class Posts(ListView):
     template_name = 'posts/posts_all.html'
     model = Post
     context_object_name = 'posts'  # Default: object_list
@@ -39,26 +40,31 @@ class Posts(ListView):
 
     def get_ordering(self):
         """Return the field or fields to use for ordering the queryset."""
-        return self.ordering    
+        return self.ordering
 
     def get_paginate_by(self, queryset):
-        return self.paginate_by        
-        
+        return self.paginate_by
+
 
 class PostDetail(DetailView):
-    # slug_field = 
     model = Post
     template_name = 'posts/post_detail.html'
     context_object_name = 'post'
-    slug_field = "slug"
+    # slug_field = "slug"
 
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        data['page_title'] = 'Authors'
-        return data
+    # def get_context_data(self, **kwargs):
+    #     data = super().get_context_data(**kwargs)
+    #     data['page_title'] = 'Authors'
+    #     return data
 
-    # num_visits = request.session.get('num_visits', 0)
-    # request.session['num_visits'] = num_visits + 1    
+    def get(self, request, *args, **kwargs):
+        num_visits = request.session.get('num_visits', 0)
+        request.session['num_visits'] = num_visits + 1
+
+        self.object = self.get_object()
+        context = self.get_context_data(num_visits=num_visits)
+        return self.render_to_response(context)
+
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
