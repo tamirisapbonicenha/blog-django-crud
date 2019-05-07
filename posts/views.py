@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
+from django.views.generic import DetailView
 from django.db.models import Q
 from django.views import View
 from .forms import PostForm, PostEdit
@@ -13,7 +14,7 @@ from .forms import PostForm, PostEdit
 from .models import Post, Category
 
 class PostView(TemplateView):
-    template_name = "home.html"
+    template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,7 +30,7 @@ class PostView(TemplateView):
 #     return render(request, 'posts/posts_all.html', {'posts': posts})
 
 class Posts(ListView): 
-    template_name = "posts/posts_all.html"
+    template_name = 'posts/posts_all.html'
     model = Post
     context_object_name = 'posts'  # Default: object_list
     paginate_by = 10
@@ -41,32 +42,23 @@ class Posts(ListView):
         return self.ordering    
 
     def get_paginate_by(self, queryset):
-        """
-        Get the number of items to paginate by, or ``None`` for no pagination.
-        """
         return self.paginate_by        
         
 
-def post_detail(request, slug):
-    # post = get_object_or_404(Post, slug=slug)
-    # return render(request, 'posts/post_detail.html', {'post': post})
+class PostDetail(DetailView):
+    # slug_field = 
+    model = Post
+    template_name = 'posts/post_detail.html'
+    context_object_name = 'post'
+    slug_field = "slug"
 
-    try:
-        post = Post.objects.get(slug=slug)
-    except Post.DoesNotExist:
-        raise Http404("Post does not exist")
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['page_title'] = 'Authors'
+        return data
 
-    # post = Post.objects.filter(slug__iexact = slug)
-    # if post.exists():
-    #     post = post.first()
-    # else:
-    #     return HttpResponse('<h1>Post Not Found</h1>')
-
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits + 1
-
-    return render(request, 'posts/post_detail.html', {'post': post, 'num_visits': num_visits,})
-
+    # num_visits = request.session.get('num_visits', 0)
+    # request.session['num_visits'] = num_visits + 1    
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
