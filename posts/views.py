@@ -7,10 +7,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
-from django.views.generic.edit import FormView, UpdateView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.views import View
-from .forms import PostForm, PostUpdateForm
+from .forms import PostCreateForm, PostUpdateForm
 from http.client import responses
 # CategoryForm
 from .models import Post, Category
@@ -68,18 +68,38 @@ class PostDetail(DetailView):
         return self.render_to_response(context)
 
 
-class PostUpdateView(UpdateView):
-    model = Post
-    template_name = 'posts/post_update.html'
-    form_class = PostUpdateForm
+# @login_required
+# def post_new(request):
+#     post = Post()
+#     if request.method == 'POST':
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             post.author = form.cleaned_data['author']
+#             # bill = Bill.objects.get(form.cleaned_data['pk'])
+#             post.title = form.cleaned_data['title']
+#             post.text = form.cleaned_data['text']
+#             post.category = Category.objects.get(id=form.cleaned_data['category'])
+#             post.save()
+#     else:
+#         form = PostForm()
+
+#     return render(request, 'posts/post_create.html', {'form' : form})
+
+class PostCreateView(CreateView):
+    template_name = 'posts/post_create.html'
+    form_class = PostCreateForm
+    success_url = '/posts/'
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
-        # form.send_email()
-        # return super().form_valid(form)    
-        form.save()
-        return redirect('posts')
+        return super().form_valid(form)
+
+class PostUpdateView(UpdateView):
+    template_name = 'posts/post_update.html'
+    form_class = PostUpdateForm
+    success_url = '/posts/'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 # def post_update(request, pk):
 #     post = get_object_or_404(Post, pk=pk)
@@ -110,24 +130,28 @@ class PostUpdateView(UpdateView):
 #     template_name = 'posts/post_update.html'
 #     form_class = PostUpdateForm
 #     success_url = '/posts/'
-    
+
 #     def form_valid(self, form):
 #         # This method is called when valid form data has been POSTed.
 #         # It should return an HttpResponse.
 #         form.send_email()
 #         return super().form_valid(form)
 
+class PostDeleteView(DeleteView):
+    template_name = 'posts/post_delete.html'
+    model = Post
+    success_url = '/posts/'
 
 
 
-def post_delete(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+# def post_delete(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
 
-    if request.method == "POST":
-        post.delete()
-        return redirect('posts')
+#     if request.method == "POST":
+#         post.delete()
+#         return redirect('posts')
 
-    return render(request, 'posts/post_delete.html', {'post': post})
+#     return render(request, 'posts/post_delete.html', {'post': post})
 
 
 # def post_delete_confirm(request, pk):
@@ -148,23 +172,6 @@ def post_delete(request, pk):
 #         form = PostForm()
 #     return render(request, 'posts/post_create.html', {'form': form})
 
-
-@login_required
-def post_new(request):
-    post = Post()
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post.author = form.cleaned_data['author']
-            # bill = Bill.objects.get(form.cleaned_data['pk'])
-            post.title = form.cleaned_data['title']
-            post.text = form.cleaned_data['text']
-            post.category = Category.objects.get(id=form.cleaned_data['category'])
-            post.save()
-    else:
-        form = PostForm()
-
-    return render(request, 'posts/post_create.html', {'form' : form})
 
 
 # def category_create(request):
