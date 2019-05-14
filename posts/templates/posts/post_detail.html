@@ -9,7 +9,7 @@
         {% if user.is_authenticated %}
         <div class="post__actions text-right mt-5">
             <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-secondary mt-5"><i class="far fa-edit"></i></a>
+                <a href="{% url 'post_update' pk=post.pk %}" class="btn btn-secondary mt-5"><i class="far fa-edit"></i></a>
                 <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger mt-5"><i class="far fa-trash-alt"></i></a>
             </div>
         </div>

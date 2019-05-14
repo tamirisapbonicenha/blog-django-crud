@@ -29,3 +29,8 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+admin.site.site_header = 'Meu blog pessoal'
+admin.site.index_title = 'Dashboard'
+admin.site.site_title = 'Bem vindo'

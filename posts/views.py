@@ -7,9 +7,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic import DetailView
+from django.views.generic.edit import FormView, UpdateView
 from django.db.models import Q
 from django.views import View
-from .forms import PostForm, PostEdit
+from .forms import PostForm, PostUpdateForm
 from http.client import responses
 # CategoryForm
 from .models import Post, Category
@@ -49,8 +50,9 @@ class Posts(ListView):
 class PostDetail(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
-    context_object_name = 'post'
+    # context_object_name = 'post'
     # slug_field = "slug"
+
 
     # def get_context_data(self, **kwargs):
     #     data = super().get_context_data(**kwargs)
@@ -66,29 +68,56 @@ class PostDetail(DetailView):
         return self.render_to_response(context)
 
 
-def post_edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+class PostUpdateView(UpdateView):
+    model = Post
+    template_name = 'posts/post_update.html'
+    form_class = PostUpdateForm
 
-    if request.method == "POST":
-        if request.POST['title'] and request.POST['text'] and request.POST['category']:
-            postEdit = Post.objects.get(pk=pk)
-            print('#############', request.POST['category'])
-            CategoryEdit = Category.objects.get(id=request.POST['category'])
-            # postEdit = post
-            postEdit.title = request.POST['title']
-            postEdit.text = request.POST['text']
-            postEdit.category = CategoryEdit
-            postEdit.save()
-            return redirect('post_detail', pk)
-        else:
-            return redirect('posts')
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        # form.send_email()
+        # return super().form_valid(form)    
+        form.save()
+        return redirect('posts')
 
-    context = {
-        'post': post,
-        'category': Category.objects.all()
-    }
+# def post_update(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
 
-    return render(request, 'posts/post_edit.html', context)
+#     if request.method == "POST":
+#         if request.POST['title'] and request.POST['text'] and request.POST['category']:
+#             postEdit = Post.objects.get(pk=pk)
+#             print('#############', request.POST['category'])
+#             CategoryEdit = Category.objects.get(id=request.POST['category'])
+#             # postEdit = post
+#             postEdit.title = request.POST['title']
+#             postEdit.text = request.POST['text']
+#             postEdit.category = CategoryEdit
+#             postEdit.save()
+#             return redirect('post_detail', pk)
+#         else:
+#             return redirect('posts')
+
+#     context = {
+#         'post': post,
+#         'category': Category.objects.all()
+#     }
+
+#     return render(request, 'posts/post_update.html', context)
+
+# class PostEditView(FormView):
+#     model = Post
+#     template_name = 'posts/post_update.html'
+#     form_class = PostUpdateForm
+#     success_url = '/posts/'
+    
+#     def form_valid(self, form):
+#         # This method is called when valid form data has been POSTed.
+#         # It should return an HttpResponse.
+#         form.send_email()
+#         return super().form_valid(form)
+
+
 
 
 def post_delete(request, pk):

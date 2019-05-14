@@ -1,5 +1,8 @@
+ddquery==0.1
 Django==2.1.8
 django-debug-toolbar==1.11
-pytz==2018.9
-sqlparse==0.3.0
+mysqlclient==1.4.2.post1
 Pillow==6.0.0
+Pygments==2.2.0
+pytz==2018.9
+sqlparse==0.2.3

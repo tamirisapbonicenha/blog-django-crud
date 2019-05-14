@@ -111,6 +111,29 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGIN_URL = '/admin/'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'sqlhandler': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'sqlformatter'
+        }
+    },
+    'formatters': {
+        'sqlformatter': {
+            '()': 'ddquery.SqlFormatter',
+            'format': '%(levelname)s %(message)s',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['sqlhandler'],
+            'level': 'DEBUG',
+        },
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
