@@ -5,7 +5,7 @@ from .models import Post, Author, Category
 class PostCreateForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['author', 'category', 'title', 'text', 'published']
+        fields = ['title', 'text']
 
 class PostUpdateForm(forms.ModelForm):
     class Meta:

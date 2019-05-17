@@ -12,6 +12,8 @@ from django.db.models import Q
 from django.views import View
 from .forms import PostCreateForm, PostUpdateForm
 from http.client import responses
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 # CategoryForm
 from .models import Post, Category
 
@@ -68,7 +70,6 @@ class PostDetail(DetailView):
         return self.render_to_response(context)
 
 
-# @login_required
 # def post_new(request):
 #     post = Post()
 #     if request.method == 'POST':
@@ -85,10 +86,13 @@ class PostDetail(DetailView):
 
 #     return render(request, 'posts/post_create.html', {'form' : form})
 
+
+@method_decorator(login_required, name='dispatch')
 class PostCreateView(CreateView):
     template_name = 'posts/post_create.html'
     form_class = PostCreateForm
     success_url = '/posts/'
+    model = Post
 
     def form_valid(self, form):
         return super().form_valid(form)
@@ -97,9 +101,18 @@ class PostUpdateView(UpdateView):
     template_name = 'posts/post_update.html'
     form_class = PostUpdateForm
     success_url = '/posts/'
+    model = Post
 
-    def form_valid(self, form):
-        return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('file_field')
+        
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 # def post_update(request, pk):
 #     post = get_object_or_404(Post, pk=pk)
