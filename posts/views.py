@@ -36,17 +36,9 @@ class PostView(TemplateView):
 class Posts(ListView):
     template_name = 'posts/posts_all.html'
     model = Post
-    context_object_name = 'posts'  # Default: object_list
-    paginate_by = 10
+    context_object_name = 'posts' # Default: object_list
+    paginate_by = 5
     ordering = ['-id']
-    # queryset = Post.objects.all()
-
-    def get_ordering(self):
-        """Return the field or fields to use for ordering the queryset."""
-        return self.ordering
-
-    def get_paginate_by(self, queryset):
-        return self.paginate_by
 
 
 class PostDetail(DetailView):
@@ -107,7 +99,6 @@ class PostUpdateView(UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         files = request.FILES.getlist('file_field')
-        
 
         if form.is_valid():
             return self.form_valid(form)
