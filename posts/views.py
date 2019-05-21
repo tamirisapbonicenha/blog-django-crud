@@ -26,14 +26,6 @@ class PostView(TemplateView):
         context['posts'] = Post.objects.all()
         return context
 
-# def posts(request):
-#     posts_list =  Post.objects.all()
-#     paginator = Paginator(posts_list, 5)
-#     page = request.GET.get('page')
-#     posts = paginator.get_page(page)
-
-#     return render(request, 'posts/posts_all.html', {'posts': posts})
-
 class Posts(ListView):
     template_name = 'posts/posts_all.html'
     model = Post
@@ -54,23 +46,6 @@ class PostDetail(DetailView):
         return self.render_to_response(context)
 
 
-# def post_new(request):
-#     post = Post()
-#     if request.method == 'POST':
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             post.author = form.cleaned_data['author']
-#             # bill = Bill.objects.get(form.cleaned_data['pk'])
-#             post.title = form.cleaned_data['title']
-#             post.text = form.cleaned_data['text']
-#             post.category = Category.objects.get(id=form.cleaned_data['category'])
-#             post.save()
-#     else:
-#         form = PostForm()
-
-#     return render(request, 'posts/post_create.html', {'form' : form})
-
-
 @method_decorator(login_required, name='dispatch')
 class PostCreateView(CreateView):
     template_name = 'posts/post_create.html'
@@ -83,17 +58,6 @@ class PostCreateView(CreateView):
         context['categories'] = Category.objects.all()
         return context
 
-    # def form_valid(self, form):
-    #     if form.is_valid():
-    #         # All good logic goes here, which in the simplest case is
-    #         # returning super.form_valid
-    #         # return super(PostCreateView, self).form_valid(form)
-    #         return super().form_valid(form)
-    #     else:
-    #         # Otherwise treat as if the first form was invalid
-    #         # return super(PostCreateView, self).form_invalid(form)        
-    #         return super().form_valid(form)
-       
 
 class PostUpdateView(UpdateView):
     template_name = 'posts/post_update.html'
@@ -101,88 +65,10 @@ class PostUpdateView(UpdateView):
     success_url = '/posts/'
     model = Post
 
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        files = request.FILES.getlist('file_field')
-
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-# def post_update(request, pk):
-#     post = get_object_or_404(Post, pk=pk)
-
-#     if request.method == "POST":
-#         if request.POST['title'] and request.POST['text'] and request.POST['category']:
-#             postEdit = Post.objects.get(pk=pk)
-#             print('#############', request.POST['category'])
-#             CategoryEdit = Category.objects.get(id=request.POST['category'])
-#             # postEdit = post
-#             postEdit.title = request.POST['title']
-#             postEdit.text = request.POST['text']
-#             postEdit.category = CategoryEdit
-#             postEdit.save()
-#             return redirect('post_detail', pk)
-#         else:
-#             return redirect('posts')
-
-#     context = {
-#         'post': post,
-#         'category': Category.objects.all()
-#     }
-
-#     return render(request, 'posts/post_update.html', context)
-
-# class PostEditView(FormView):
-#     model = Post
-#     template_name = 'posts/post_update.html'
-#     form_class = PostUpdateForm
-#     success_url = '/posts/'
-
-#     def form_valid(self, form):
-#         # This method is called when valid form data has been POSTed.
-#         # It should return an HttpResponse.
-#         form.send_email()
-#         return super().form_valid(form)
-
 class PostDeleteView(DeleteView):
     template_name = 'posts/post_delete.html'
     model = Post
     success_url = '/posts/'
-
-
-
-# def post_delete(request, pk):
-#     post = get_object_or_404(Post, pk=pk)
-
-#     if request.method == "POST":
-#         post.delete()
-#         return redirect('posts')
-
-#     return render(request, 'posts/post_delete.html', {'post': post})
-
-
-# def post_delete_confirm(request, pk):
-#     post = get_object_or_404(Post, pk=pk)
-#     post.delete()
-#     return redirect('posts')
-
-
-# @login_required
-# def post_new(request):
-#     if request.method == "POST":
-#         form = PostForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.save()
-#             return redirect('posts')
-#     else:
-#         form = PostForm()
-#     return render(request, 'posts/post_create.html', {'form': form})
-
-
 
 # def category_create(request):
 #     if request.method == 'POST':
@@ -207,3 +93,4 @@ def search_posts(request):
     }
 
     return render(request, template, context)
+

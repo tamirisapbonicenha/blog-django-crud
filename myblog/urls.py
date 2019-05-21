@@ -18,11 +18,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from posts import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('posts.urls')),
     # path('posts/', include('posts.urls')),
 ]
+
+handler404 = 'utils.views.error_404_view'
+handler500 = 'post.views.error_500_view'
 
 if settings.DEBUG:
     import debug_toolbar
