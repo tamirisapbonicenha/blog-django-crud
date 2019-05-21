@@ -15,7 +15,8 @@ from http.client import responses
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 # CategoryForm
-from .models import Post, Category
+from .models import Post
+from categories.models import Category
 
 class PostView(TemplateView):
     template_name = 'home.html'
@@ -44,20 +45,11 @@ class Posts(ListView):
 class PostDetail(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
-    # context_object_name = 'post'
-    # slug_field = "slug"
-
-
-    # def get_context_data(self, **kwargs):
-    #     data = super().get_context_data(**kwargs)
-    #     data['page_title'] = 'Authors'
-    #     return data
 
     def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
         num_visits = request.session.get('num_visits', 0)
         request.session['num_visits'] = num_visits + 1
-
-        self.object = self.get_object()
         context = self.get_context_data(num_visits=num_visits)
         return self.render_to_response(context)
 
@@ -86,8 +78,22 @@ class PostCreateView(CreateView):
     success_url = '/posts/'
     model = Post
 
-    def form_valid(self, form):
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+    # def form_valid(self, form):
+    #     if form.is_valid():
+    #         # All good logic goes here, which in the simplest case is
+    #         # returning super.form_valid
+    #         # return super(PostCreateView, self).form_valid(form)
+    #         return super().form_valid(form)
+    #     else:
+    #         # Otherwise treat as if the first form was invalid
+    #         # return super(PostCreateView, self).form_invalid(form)        
+    #         return super().form_valid(form)
+       
 
 class PostUpdateView(UpdateView):
     template_name = 'posts/post_update.html'
@@ -197,6 +203,7 @@ def search_posts(request):
 
     context = {
         'posts': results,
+        'categories': Category.object.all()
     }
 
     return render(request, template, context)
