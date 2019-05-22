@@ -21,7 +21,14 @@ class Post(models.Model):
     text = models.TextField()
     image = models.ImageField(upload_to=post_image, null=True)
     published = models.BooleanField('Publicar?', default=False)
+    visit_count = models.IntegerField(default=0)
     slug = models.SlugField(max_length=200, null=True, blank=True)
+
+    def add_visit(self):
+        if self.visit_count is not None:
+            self.visit_count += 1
+        else:
+            self.visit_count = 0
     
     def save(self, *args, **kwargs):
         if self.id is None:

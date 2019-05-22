@@ -42,6 +42,10 @@ class PostDetail(DetailView):
         self.object = self.get_object()
         num_visits = request.session.get('num_visits', 0)
         request.session['num_visits'] = num_visits + 1
+        # self.object.visit_count += 1
+        self.object.add_visit()
+        self.object.save()
+        
         context = self.get_context_data(num_visits=num_visits)
         return self.render_to_response(context)
 

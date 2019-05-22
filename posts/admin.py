@@ -4,15 +4,7 @@ from .models import Post
 
 class PostAdmin(admin.ModelAdmin):
     actions = ['make_published']
-    # fields = (('author'), 'title', 'text', ('category', 'image'), ('published', 'slug'))
-    # fieldsets = (
-    #     ('Dados', { 'fields': ('author', 'title') }),
-    #     ('Dados complementares', {
-    #         'classes': ('collapse',),
-    #         'fields': ('category', 'image', 'published', 'slug')
-    #     }),
-    # )
-    list_display = ['author', 'title', 'category', 'image', 'published']
+    list_display = ['author', 'title', 'category', 'image', 'visit_count', 'published']
     list_filter = ('author', 'category')
     search_fields = ('author', )
 
