@@ -45,7 +45,7 @@ class PostDetail(DetailView):
         # self.object.visit_count += 1
         self.object.add_visit()
         self.object.save()
-        
+
         context = self.get_context_data(num_visits=num_visits)
         return self.render_to_response(context)
 
@@ -57,10 +57,10 @@ class PostCreateView(CreateView):
     success_url = '/posts/'
     model = Post
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['categories'] = Category.objects.all()
+    #     return context
 
 
 class PostUpdateView(UpdateView):

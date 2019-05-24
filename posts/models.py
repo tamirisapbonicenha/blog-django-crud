@@ -15,7 +15,7 @@ def post_image(instance, filename):
 class Post(models.Model):
     created_date = models.DateTimeField(
             default=timezone.now)
-    author = models.ForeignKey(Author, null=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, null=True, on_delete=models.CASCADE, verbose_name='Autor')
     category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=256)
     text = models.TextField()
@@ -25,11 +25,8 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, null=True, blank=True)
 
     def add_visit(self):
-        if self.visit_count is not None:
-            self.visit_count += 1
-        else:
-            self.visit_count = 0
-    
+        self.visit_count += 1
+
     def save(self, *args, **kwargs):
         if self.id is None:
             saved_image = self.image
