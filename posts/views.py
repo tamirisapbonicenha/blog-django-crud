@@ -24,6 +24,7 @@ class PostView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.all()
+        context['most_visited'] = Post.objects.order_by('-visit_count')
         return context
 
 class Posts(ListView):
@@ -34,19 +35,21 @@ class Posts(ListView):
     ordering = ['-id']
 
 
+
 class PostDetail(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        num_visits = request.session.get('num_visits', 0)
-        request.session['num_visits'] = num_visits + 1
+        # num_visits = request.session.get('num_visits', 0)
+        # request.session['num_visits'] = num_visits + 1
         # self.object.visit_count += 1
         self.object.add_visit()
         self.object.save()
 
-        context = self.get_context_data(num_visits=num_visits)
+        # context = self.get_context_data(num_visits=num_visits)
+        context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
 
