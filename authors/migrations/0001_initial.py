@@ -15,14 +15,13 @@ class Migration(migrations.Migration):
             name='Author',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=50)),
-                ('last_name', models.CharField(max_length=50)),
-                ('presentation', models.CharField(max_length=256)),
+                ('name', models.CharField(max_length=100)),
+                ('bio', models.CharField(max_length=256)),
             ],
             options={
                 'verbose_name': 'Autor',
                 'verbose_name_plural': 'Autores',
-                'ordering': ['first_name'],
+                'ordering': ['name'],
             },
         ),
     ]

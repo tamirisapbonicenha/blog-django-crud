@@ -21,6 +21,7 @@ class Post(models.Model):
     text = models.TextField()
     image = models.ImageField(upload_to=post_image, null=True)
     published = models.BooleanField('Publicar?', default=False)
+    pub_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     visit_count = models.IntegerField(default=0)
     slug = models.SlugField(max_length=200, null=True, blank=True)
 
@@ -28,6 +29,9 @@ class Post(models.Model):
         self.visit_count += 1
 
     def save(self, *args, **kwargs):
+        if not self.published and self.pub_date:
+            self.pub_date = timezone.now()
+
         if self.id is None:
             saved_image = self.image
             self.image = None

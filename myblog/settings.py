@@ -116,25 +116,25 @@ LOGIN_URL = '/admin/'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'sqlhandler': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'sqlformatter'
-        }
-    },
-    'formatters': {
-        'sqlformatter': {
-            '()': 'ddquery.SqlFormatter',
-            'format': '%(levelname)s %(message)s',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['sqlhandler'],
-            'level': 'DEBUG',
-        },
-    }
+    # 'handlers': {
+    #     'sqlhandler': {
+    #         'level': 'DEBUG',
+    #         'class': 'logging.StreamHandler',
+    #         'formatter': 'sqlformatter'
+    #     }
+    # },
+    # 'formatters': {
+    #     'sqlformatter': {
+    #         '()': 'ddquery.SqlFormatter',
+    #         'format': '%(levelname)s %(message)s',
+    #     },
+    # },
+    # 'loggers': {
+    #     'django.db.backends': {
+    #         'handlers': ['sqlhandler'],
+    #         'level': 'DEBUG',
+    #     },
+    # }
 }
 
 # Internationalization

@@ -18,39 +18,48 @@ from django.utils.decorators import method_decorator
 from .models import Post
 from categories.models import Category
 
+
 class PostView(TemplateView):
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.all()
-        context['most_visited'] = Post.objects.order_by('-visit_count')
+        # context['most_visited'] = Post.objects.order_by('-visit_count')
         return context
-
-class Posts(ListView):
-    template_name = 'posts/posts_all.html'
-    model = Post
-    context_object_name = 'posts' # Default: object_list
-    paginate_by = 5
-    ordering = ['-id']
-
 
 
 class PostDetail(DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
 
+    # def get_object(self):
+    #     object = super(PostDetail, self).get_object()
+    #     object.add_visit()
+    #     object.save()
+    #     return object
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        # num_visits = request.session.get('num_visits', 0)
-        # request.session['num_visits'] = num_visits + 1
-        # self.object.visit_count += 1
-        self.object.add_visit()
-        self.object.save()
+        context = self.get_context_data(**kwargs)
+        response = self.render_to_response(context)
+        response.set_cookie('post_%s' % self.object.id, False)
+        post_visited = request.COOKIES['post_%s' % self.object.id]
 
-        # context = self.get_context_data(num_visits=num_visits)
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+        if not post_visited:
+            self.object.add_visit()
+            self.object.save()
+
+        return response
+
+
+class Posts(ListView):
+    template_name = 'posts/posts_all.html'
+    model = Post
+    context_object_name = 'posts'
+    paginate_by = 5
+    ordering = ['-id']
+
 
 
 @method_decorator(login_required, name='dispatch')

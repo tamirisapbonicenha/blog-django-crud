@@ -1,15 +1,20 @@
+from PIL import Image
+
 from django.db import models
 
+def author_image(instance, filename):
+    return 'p_{0}/{1}'.format(instance.id, filename)
+
 class Author(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    presentation = models.CharField(max_length=256)
+    name = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to=author_image, null=True)
+    bio = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
-        ordering = ['first_name']
+        ordering = ['name']
         verbose_name = 'Autor'
         verbose_name_plural = 'Autores'
 
     def __str__(self):
-        return '%s %s' % (self.first_name, self.last_name)       
+        return '%s' % (self.name)       
         
