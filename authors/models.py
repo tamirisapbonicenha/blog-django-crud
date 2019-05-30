@@ -15,6 +15,21 @@ class Author(models.Model):
         verbose_name = 'Autor'
         verbose_name_plural = 'Autores'
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        image = Image.open(self.photo)
+
+        width, height = image.size
+        left = (width - 200)/2
+        top = (height - 200)/2
+        right = (width + 200)/2
+        bottom = (height + 200)/2        
+
+        # cropped_image = image.crop((100, 100, 200, 200))
+        cropped_image = image.crop((left, top, right, bottom))
+        resized_image = cropped_image.resize((70, 70), Image.ANTIALIAS)
+        resized_image.save((self.photo.path))
+
     def __str__(self):
         return '%s' % (self.name)       
         
