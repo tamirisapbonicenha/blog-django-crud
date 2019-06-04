@@ -169,7 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 INTERNAL_IPS = ('127.0.0.1')
 
-try:
-   from .local_settings import *
-except ImportError:
-    raise Exception("Um arquivo local_settings.py é obrigatório para rodar esse projeto")
+# try:
+#    from .local_settings import *
+# except ImportError:
+#     raise Exception("Um arquivo local_settings.py é obrigatório para rodar esse projeto")
