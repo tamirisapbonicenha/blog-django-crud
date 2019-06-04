@@ -2,20 +2,24 @@
 
 {% block content %}
     <section class="post-detail">
-        <h1>{{ post.title }}</h1>
-        <h5 class="text-muted d-block font-weight-normal mb-4">Subtitulo</h5>
-        <div class="d-inline-block">
-            <h6>
-                <small class="text-body d-block">{{ post.author.name }}</small> 
-                <small class="text-body d-block">{{ post.pub_date|date:"d M Y" }}</small>
-            </h6>    
-        </div>
-        <div class="d-inline-block">
-            <img src="{{ post.author.photo.url }}" class="img-fluid img-thumbnail rounded" alt="">
+        <div class="post__header">
+            <h1>{{ post.title }}</h1>
+            <h5 class="text-muted d-block font-weight-normal mb-4">Subtitulo</h5>
+            <div class="d-inline-block mr-2">
+                <img src="{{ post.author.photo.url }}" class="img-fluid img-thumbnail rounded" alt="{{ post.author.name }}">
+            </div>
+            <div class="d-inline-block">
+                <h6>
+                    <small class="text-body d-block">{{ post.author.name }}</small> 
+                    <small class="text-body d-block">{{ post.pub_date|date:"d M Y" }}</small>
+                </h6>    
+            </div>
         </div>
 
-        <div class="post-detail__content mt-5">
-            <img src="{{ post.image.url }}" class="img-fluid my-3" alt="">
+        <div class="post-detail__content">
+            <div class="my-5">
+                <img src="{{ post.image.url }}" class="img-fluid" alt="">
+            </div>
             <p>{{ post.text|linebreaksbr }}</p>
             
             {% if user.is_authenticated %}
@@ -26,6 +30,18 @@
                     </div>
                 </div>
             {% endif %}
+        </div>
+
+        <div class="post__footer">
+            <div class="d-inline-block mr-2">
+                <img src="{{ post.author.photo.url }}" class="img-fluid img-thumbnail rounded" alt="{{ post.author.name }}">
+            </div>
+            <div class="d-inline-block">
+                <h6>
+                    <small class="text-body d-block">{{ post.author.name }}</small> 
+                    <small class="text-body d-block">{{ post.pub_date|date:"d M Y" }}</small>
+                </h6>    
+            </div>           
         </div>
 
     </section>

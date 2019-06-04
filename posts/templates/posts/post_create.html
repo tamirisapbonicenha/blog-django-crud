@@ -12,38 +12,91 @@
                 {{ hidden_field }}
             {% endfor %}
 
-            {% if form.non_field_errors %}
-                <div class="alert alert-danger" role="alert">
-                {% for error in form.non_field_errors %}
-                    {{ error }}
-                {% endfor %}
-                </div>
-            {% endif %}
-
-            {% for field in form.visible_fields %}
-                <div class="form-group">
-                {{ field.label_tag }}
-
+            <div class="form-group">
+                {{ form.author.label_tag }}
                 {% if form.is_bound %}
-                    {% if field.errors %}
-                    {% render_field field class="form-control is-invalid" %}
-                    {% for error in field.errors %}
-                        <div class="invalid-feedback">
-                        {{ error }}
-                        </div>
-                    {% endfor %}
+                    {% if form.author.errors %}
+                        {% render_field form.author class="form-control is-invalid" %}
+                        <div class="invalid-feedback">{{ form.author.errors }}</div>
                     {% else %}
-                    {% render_field field class="form-control is-valid" %}
-                    {% endif %}
-                {% else %}
-                    {% render_field field class="form-control" %}
-                {% endif %}
+                        {% render_field form.author class="form-control is-valid" %} 
+                    {% endif %}  
+                {% else %}     
+                    {% render_field form.author class="form-control" %}
+                {% endif %}                         
+            </div>               
+            
+            <div class="form-group">
+                {{ form.category.label_tag }}
+                {% if form.is_bound %}
+                    {% if form.category.errors %}
+                        {% render_field form.category class="form-control is-invalid" %}
+                        <div class="invalid-feedback">{{ form.category.errors }}</div>
+                    {% else %}
+                        {% render_field form.category class="form-control is-valid" %} 
+                    {% endif %}    
+                {% else %}     
+                    {% render_field form.category class="form-control" %}    
+                {% endif %}      
+            </div>  
+            
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {% if form.is_bound %}
+                    {% if form.title.errors %}
+                        {% render_field form.title class="form-control is-invalid" %}
+                        <div class="invalid-feedback">{{ form.title.errors }}</div>
+                    {% else %}
+                        {% render_field form.title class="form-control is-valid" %} 
+                    {% endif %} 
+                {% else %}                 
+                    {% render_field form.title class="form-control" %} 
+                {% endif %} 
+            </div>             
 
-                {% if field.help_text %}
-                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                {% endif %}
+            <div class="form-group">
+                {{ form.text.label_tag }}
+                {% if form.is_bound %}
+                    {% if form.text.errors %}
+                        {% render_field form.text class="form-control is-invalid" %}
+                        <div class="invalid-feedback">{{ form.text.errors }}</div>
+                    {% else %}
+                        {% render_field form.text class="form-control is-valid" %} 
+                    {% endif %}           
+                {% else %}   
+                    {% render_field form.text class="form-control" %}  
+                {% endif %}                        
+            </div>             
+
+            <div class="form-group">
+                {{ form.image.label_tag }}
+                {% if form.is_bound %}
+                    {% if form.image.errors %}
+                        {% render_field form.image class="form-control-file is-invalid" %}
+                        <div class="invalid-feedback">{{ form.image.errors }}</div>
+                    {% else %}
+                        {% render_field form.image class="form-control-file is-valid" %} 
+                    {% endif %}   
+                {% else %}     
+                    {% render_field form.image class="form-control-file" %}       
+                {% endif %}     
+            </div>      
+            
+            <div class="form-group">
+                <div class="form-check">
+                    {% if form.is_bound %}
+                        {% if form.published.errors %}
+                            {% render_field form.published class="form-check-input is-invalid" %}
+                            <div class="invalid-feedback">{{ form.published.errors }}</div>
+                        {% else %}
+                            {% render_field form.published class="form-check-input is-valid" %} 
+                        {% endif %}                    
+                    {% else %}                          
+                        {% render_field form.published class="form-check-input" %} 
+                    {% endif %}   
+                    {{ form.published.label_tag }}  
                 </div>
-            {% endfor %}
+            </div>            
 
             <div class="text-right">
                 <button type="submit" class="btn btn-success mt-4"><i class="far fa-save"></i></button>

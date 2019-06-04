@@ -27,7 +27,7 @@ class Author(models.Model):
 
         # cropped_image = image.crop((100, 100, 200, 200))
         cropped_image = image.crop((left, top, right, bottom))
-        resized_image = cropped_image.resize((70, 70), Image.ANTIALIAS)
+        resized_image = cropped_image.resize((50, 50), Image.ANTIALIAS)
         resized_image.save((self.photo.path))
 
     def __str__(self):

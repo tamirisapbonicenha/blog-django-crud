@@ -43,8 +43,9 @@ class PostDetail(DetailView):
         self.object = self.get_object()
         context = self.get_context_data(**kwargs)
         response = self.render_to_response(context)
-        response.set_cookie('post_%s' % self.object.id, False)
-        post_visited = request.COOKIES['post_%s' % self.object.id]
+        response.set_cookie('post_%s' % self.object.id, True)
+        # post_visited = request.COOKIES['post_1' % self.object.id]
+        post_visited = request.COOKIES.get('post_%s' % self.object.id)
 
         if not post_visited:
             self.object.add_visit()
